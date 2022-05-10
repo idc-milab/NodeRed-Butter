@@ -1,12 +1,12 @@
 <!-- Set Motor Register Node -->
 
 <script type="text/javascript">
-    RED.nodes.registerType('set-motor-register',{
+    RED.nodes.registerType('get-distance',{
         category: 'butter',
         color: '#5c6bc0',
         defaults: {
             name: {
-                value: "set-motor-register",
+                value: "get-distance",
                 required: true,
              },
             robotIp: {
@@ -28,9 +28,9 @@
         inputs:1,
         outputs:1,
         icon: "icons/butter-logo-white.png",
-        paletteLabel: "set-motor-register",
+        paletteLabel: "get-distance",
         label: function() {
-            return this.name||"set-motor-register";
+            return this.name||"get-distance";
         },
         align: 'right',
         outputLabels: ["operation result"],
@@ -38,7 +38,7 @@
     });
 </script>
 
-<script type="text/html" data-template-name="set-motor-register">
+<script type="text/html" data-template-name="get-distance">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
