@@ -35,9 +35,9 @@ module.exports = function(RED) {
 			}
 
 			// sets the motor.
-			this.debugLogger.logIfDebugMode(
-				`setting the register ${registerName} of motor ${motorName} of robot ${robotIp} to ${value}`
-			);
+			// this.debugLogger.logIfDebugMode(
+			// 	`setting the register ${registerName} of motor ${motorName} of robot ${robotIp} to ${value}`
+			// );
 
 			try {
 				//butter_response = await this.butterHttpClient.setMotorRegister(motorName, registerName, value);
