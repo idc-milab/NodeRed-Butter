@@ -16,23 +16,23 @@ module.exports = function(RED) {
 		this.debugLogger = new DebugLogger(this, this.config.debugMode);
 
 		this.on('input', async function(msg) {
-			let robotIp = this.config.robotIp;
-			let motorName = this.config.motorName;
-			let registerName = this.config.registerName;
-			let value = this.config.value;
+			// let robotIp = this.config.robotIp;
+			// let motorName = this.config.motorName;
+			// let registerName = this.config.registerName;
+			// let value = this.config.value;
 
-			// check if message has correct json payload - if yes run it instead.
-			if (
-				msg.payload.robotIp != undefined &&
-				msg.payload.motorName != undefined &&
-				msg.payload.registerName != undefined &&
-				msg.payload.value != undefined
-			) {
-				robotIp = msg.payload.robotIp;
-				motorName = msg.payload.motorName;
-				registerName = msg.payload.registerName;
-				value = msg.payload.value;
-			}
+			// // check if message has correct json payload - if yes run it instead.
+			// if (
+			// 	msg.payload.robotIp != undefined &&
+			// 	msg.payload.motorName != undefined &&
+			// 	msg.payload.registerName != undefined &&
+			// 	msg.payload.value != undefined
+			// ) {
+			// 	robotIp = msg.payload.robotIp;
+			// 	motorName = msg.payload.motorName;
+			// 	registerName = msg.payload.registerName;
+			// 	value = msg.payload.value;
+			// }
 
 			// sets the motor.
 			// this.debugLogger.logIfDebugMode(
