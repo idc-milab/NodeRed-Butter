@@ -1,9 +1,4 @@
-/*
-    SetMotorRegister node
-        * input: message (any).
-        * command: set a value to a motor register on configured robot.
-        * output: operation success/failure response.
-*/
+
 module.exports = function(RED) {
 	function GetDistNode(config) {
 		RED.nodes.createNode(this, config);
@@ -41,7 +36,6 @@ module.exports = function(RED) {
 
 			try {
 				//butter_response = await this.butterHttpClient.setMotorRegister(motorName, registerName, value);
-				alert("finally");
 
 
 				var express = require("express");
@@ -49,45 +43,49 @@ module.exports = function(RED) {
 				var app = express();
 				var response = "";
 
-				app.listen(3000, function() {
-				console.log("server running on port 3000");
-				});
-
-				app.get("/", get_distance);
-
-				function get_distance(req, res) {
-				// Use child_process.spawn method from
-				// child_process module and assign it
-				// to variable spawn
-				var spawn = require("child_process").spawn;
-
-				// E.g : http://localhost:3000/name?firstname=Mike&lastname=Will
-				// so, first name = Mike and last name = Will
-				var process = spawn("python", [
-					"./sensors.py",
-					req.query.firstname,
-					req.query.lastname
-				]);
-
-				process.stdout.on("data", function(data) {
-					response = data.toString();
-				});
-				}
-
-				axios
-				.get("http://localhost:3000/?firstname=Omer&lastname=Noam")
-				.then(response => {
-					console.log(response.data);
-					// console.log(response.data.explanation);
+				app.listen(3003, function() {
+				console.log("server running on port 3003");
+				axios.get("http://localhost:3003/n?firstname=Omer&lastname=Noam").then(response => {
+					console.log("omer&noam");
+					console.log(data.toString());
+	
+					this.send({ payload: response });		
 				})
 				.catch(error => {
 					console.log(error);
 				});
+				
+				});
 
-				//this.debugLogger.logIfDebugMode(`butter response is ${JSON.stringify(butter_response.data)}`);
-				// send operation result.
-				this.send({ payload: response });
+				app.get("/n", get_distance);
+
+				function get_distance(req, res) {
+					// Use child_process.spawn method from
+					// child_process module and assign it
+					// to variable spawn
+					var spawn = require("child_process").spawn;
+
+					// E.g : http://localhost:3000/name?firstname=Mike&lastname=Will
+					// so, first name = Mike and last name = Will
+					var process = spawn("python", [
+						"./sensors.py",
+						req.query.firstname,
+						req.query.lastname
+					]);
+
+					process.stdout.on("data", function(data) {
+						res.send(data.toString());
+						this.debugLogger.logIfDebugMode(`butter response is ${data.toString()}`);
+						
+						
+					});
+				}
+				
+				
+				
 			} catch (error) {
+				this.debugLogger.logIfDebugMode(error);
+
 				this.debugLogger.logIfDebugMode(`failed to get distance`);
 			}
 		});
