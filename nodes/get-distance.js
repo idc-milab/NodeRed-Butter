@@ -13,7 +13,7 @@ module.exports = function(RED) {
 		var express = require("express");
 		const axios = require("axios");
 		var app = express();
-		var response = "";
+		//var response = "";
 
 		app.listen(3003, function() {
 		console.log("server running on port 3003");
@@ -28,15 +28,15 @@ module.exports = function(RED) {
 			// E.g : http://localhost:3000/name?firstname=Mike&lastname=Will
 			// so, first name = Mike and last name = Will
 			var process = spawn("python", [
-				"/Users/ehudb/Documents/GitHub/NodeRed-Butter/nodes/sensors.py",
+				"/home/kafka/Desktop/new-butter/NodeRed-Butter/nodes/sensors.py",
 				req.query.firstname,
 				req.query.lastname
-			]);
+			])
 
 			process.stdout.on("data", function(data) {
 				// console.log(data.toString());
 				res.send(data.toString());
-			});
+			})
 		}
 		
 
@@ -69,7 +69,7 @@ module.exports = function(RED) {
 				console.log("ILOVEBeny");
 				axios.get("http://127.0.0.1:3003/name?firstname=Omer&lastname=Noam").then(response => {
 					console.log(response.data);
-					console.log(JSON.stringify(response));
+					//console.log(JSON.stringify(response));
 	
 					this.send({ payload: response });
 					this.debugLogger.logIfDebugMode(`butter response is ${response.data.toString()}`);
