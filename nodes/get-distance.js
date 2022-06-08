@@ -1,25 +1,12 @@
 
 module.exports = function(RED) {
-	function GetDistNode(config) {
-		RED.nodes.createNode(this, config);
-		this.config = config;
 
-		const DebugLogger = require('../logger/debug_logger');
-		//const butterClientProvider = require('../butter-client/butter-client-provider');
-
-		//this.butterHttpClient = butterClientProvider.GetClient(this.config.robotIp);
-		this.debugLogger = new DebugLogger(this, this.config.debugMode);
-
-		var express = require("express");
+	var express = require("express");
 		const axios = require("axios");
-		var app = express();
-		//var response = "";
 
-		app.listen(3003, function() {
-		console.log("server running on port 3003");
-		});
+		
 
-		app.get("/name", get_distance);
+		
 
 		function get_distance(req, res) {
 			console.log("kkkkkllkk");
@@ -38,6 +25,41 @@ module.exports = function(RED) {
 				res.send(data.toString());
 			})
 		}
+
+	
+		var InitServer = (function () {
+			var app;
+		
+			function createInstance() {
+				var app = express();
+				return app;
+			}
+		
+			return {
+				getInstance: function () {
+					if (!app) {
+						app = createInstance();
+					}
+					return app;
+				}
+			};
+		})();
+
+	function GetDistNode(config) {
+		RED.nodes.createNode(this, config);
+		this.config = config;
+
+		const DebugLogger = require('../logger/debug_logger');
+		//const butterClientProvider = require('../butter-client/butter-client-provider');
+
+		//this.butterHttpClient = butterClientProvider.GetClient(this.config.robotIp);
+		this.debugLogger = new DebugLogger(this, this.config.debugMode);
+
+		app = InitServer.getInstance();
+		app.listen(3004, function() {
+			console.log("server running on port 3004");
+		});
+		app.get("/name", get_distance);
 		
 
 		this.on('input', async function(msg) {
@@ -67,11 +89,11 @@ module.exports = function(RED) {
 			try {
 				//butter_response = await this.butterHttpClient.setMotorRegister(motorName, registerName, value);
 				console.log("ILOVEBeny");
-				axios.get("http://127.0.0.1:3003/name?firstname=Omer&lastname=Noam").then(response => {
+				axios.get("http://127.0.0.1:3004/name?firstname=Omer&lastname=Noam").then(response => {
 					console.log(response.data);
 					//console.log(JSON.stringify(response));
 	
-					this.send({ payload: response });
+					this.send({ payload: response.data });
 					this.debugLogger.logIfDebugMode(`butter response is ${response.data.toString()}`);
 
 				})
